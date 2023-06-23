@@ -2,8 +2,9 @@
 import React, { useState, ChangeEvent, useMemo } from 'react'
 import { IoSend } from 'react-icons/io5';
 import { ImCross } from 'react-icons/im';
-// import LineChart from '../ui/lineChart';
 import Sources from './sources';
+import Greeting from './greeting';
+import ThinkingLoader from '../ui/thinkingLoader';
 
 
 const Chat: React.FC = () => {
@@ -11,13 +12,19 @@ const Chat: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const [aiResponse, setAiResponse] = useState<string>('');
   const [sources, setSources] = useState<any[]>([])
+  const [displayGreeting, setDisplayGreeting] = useState<boolean>(true);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
 
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSend = async (e?: React.FormEvent) => {
+    if (e) {
+        e.preventDefault();
+    }
+    if(displayGreeting){
+        setDisplayGreeting(false);
+    }
 
     try{
         const response = await fetch('http://localhost:3000/api/pinecone', {
@@ -99,7 +106,7 @@ const Chat: React.FC = () => {
 
 
   return (
-    <div className="container mx-auto lg:w-3/5 md:w-3/4 sm:w-4/5 ">
+    <div className="container mx-auto max-w-6xl">
         <form onSubmit={handleSend} className='flex'>
             <input type="text" 
                 value={inputValue} 
@@ -108,19 +115,26 @@ const Chat: React.FC = () => {
                 placeholder="Ask a question, being specific will provide better results" 
             />
             <button 
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="hover:bg-sky-400/50 bg-sky-400/20 text-sky-400 font-bold py-2 px-4 rounded"
             >
                 <IoSend 
                  type='submit'
                  size={24} />
             </button>
         </form>
-        <div className="bg-black p-4 rounded-lg border border-gray-500 shadow-md mt-4 text-slate-300">
+        <div className="bg-[#0f172a] p-4 rounded-lg border border-gray-500 shadow-md mt-4 text-slate-300">
+        {displayGreeting?
+        <Greeting setInputValue={setInputValue} handleSend={handleSend} />
+        :<> 
+            {aiResponse?<>
             <div>
                 {aiResponse}
             </div>
-            {MemoizedSources}   
-
+            {MemoizedSources}</>:<div className='flex justify-end'>
+                <ThinkingLoader/>
+            </div>}   
+        </>
+        }
         </div>
     </div>
   )

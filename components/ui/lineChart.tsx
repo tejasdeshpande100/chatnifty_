@@ -1,4 +1,5 @@
-import React from 'react';
+'use client'
+import React,{useEffect, useState} from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -40,6 +41,7 @@ interface Props {
 }
 
 function convertDataFormat(chart_data: any): any {
+  console.log('called')
   const labels: string[] = [];
   const datasets: any[] = [];
 
@@ -99,18 +101,57 @@ function generateRandomRGBA(): string {
 
 const LineChart : React.FC<Props> = (props: Props)=> {
 
-  console.log('props', props)
+  const [dataIndex,setDataIndex] = useState(0);
+  const [displayData,setDisplayData] = useState({labels:[],datasets:[]});
+  const [allData,setAllData] = useState({labels:[],datasets:[]});
 
-  const data = JSON.parse(props.metadata.data);
- 
-  const convertedData = convertDataFormat(data);
-  console.log('convertedData', convertedData)
+
+  useEffect(() => {
+    const data = JSON.parse(props.metadata.data);
+
+    const convertedData = convertDataFormat(data);
+    setAllData(convertedData);
+    setDisplayData(convertedData)
+  }, [props.metadata])
+
+  const handleClick = (index: number) => {
+    setDisplayData((prevData: any) => {
+      let newData = {...prevData};
+      newData.datasets = [allData.datasets[index]];
+      console.log(newData)
+      return newData;
+    })
+    setDataIndex(index);
+  }
+  
+  
 
   options.plugins.title.text =  props.metadata.title || ( `${props.metadata?.text.match(/Ticker: (.*)/)?.[1]} ` + (props.metadata?.text.match(/DATA:(.*)/)?.[1] || props.metadata?.text.match(/DATA: (.*)/)?.[1]))
 
   return (
     <>
-        <Line options={options} data={convertedData} />
+        
+        <div className='flex mt-2'>
+        <div className=''>View: </div> 
+
+        <div className='overflow-x-auto w-full flex pb-3'>
+        <button 
+              onClick={()=>setDisplayData(allData)} 
+              className={` hover:bg-sky-400/10 ${dataIndex===0?'bg-sky-400/20':''} text-sky-400 p-1 cursor-pointer rounded border-solid border border-sky-500 whitespace-nowrap ml-2`} >
+              Combined
+            </button>
+          {allData.datasets.map((key:any, index) => (
+            <button 
+              onClick={()=>handleClick(index+1)} // 1 based indexing in Array , 0 is for all
+              className={` hover:bg-sky-400/10 ${dataIndex===index+1?'bg-sky-400/20':''} text-sky-400 p-1 cursor-pointer rounded border-solid border border-sky-500 whitespace-nowrap ml-2`} key={index}>
+              {key.label}
+            </button>
+          ))}
+        </div>
+        </div>
+
+        <Line options={options} data={displayData} />
+
     </>
     
   )
