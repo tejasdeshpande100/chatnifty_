@@ -15,6 +15,7 @@ export async function POST(req: Request): Promise<Response>{
     try {
 
       const {question, sources} = (await req.json()) as requestBody;
+      console.log(question)
 
 
       let financialData = 'Fanancial Data:\n\n'
@@ -55,15 +56,22 @@ export async function POST(req: Request): Promise<Response>{
 
       
       if(response.status !== 200)
-        return new Response('OpenaAI API error', { status: 500 })
+        return new Response('OpenaAI API error', { status: response.status })
      
-      const stream = OpenAIStream(response);
-      return new StreamingTextResponse(stream);
+      try{
+        const stream = OpenAIStream(response);
+        return new StreamingTextResponse(stream);
+      }  catch (error) {
+        // Handle the error
+        console.log('erorrrr',error)
+        return new Response('error', { status: 500 })
+      }
+      
       
     
     } catch (error) {
       // Handle the error
-      console.log(error)
+      console.log('erorrrr',error)
       return new Response('error', { status: 500 })
     }
     

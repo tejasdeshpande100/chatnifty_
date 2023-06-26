@@ -11,7 +11,7 @@ interface Props {
 const Source : React.FC<Props> = (props: any)=> {
 
     const metadata  = props.metadata;
-    const [table, setTable] = useState<boolean>(false);
+    const [table, setTable] = useState<boolean>(true);
 
     let sourceContent = ''
     let companyName = metadata?.text.match(/Company Name: (.*)/)?.[1]
@@ -30,17 +30,20 @@ const Source : React.FC<Props> = (props: any)=> {
             {sourceContent}
         </div>:
         <div className="mt-4 bg-slate-800 p-4 rounded">
-            <button 
-                onClick={()=>setTable(false)}
-                className={` hover:bg-sky-400/10 ${table?'':'bg-sky-400/20'} text-sky-400  py-2 px-4 transition duration-300`}>
-                Chart
-            </button>
+            
 
             <button 
                 onClick={()=>setTable(true)}
                 className={`hover:bg-sky-400/10 ${table?'bg-sky-400/20':''} text-sky-400  py-2 px-4 transition duration-300`}>
                 Table
             </button>
+
+            <button 
+                onClick={()=>setTable(false)}
+                className={` hover:bg-sky-400/10 ${table?'':'bg-sky-400/20'} text-sky-400  py-2 px-4 transition duration-300`}>
+                Chart
+            </button>
+            
             {table?
             <Table metadata={metadata}/>: <LineChart metadata={metadata}/>}
            

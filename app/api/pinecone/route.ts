@@ -22,7 +22,7 @@ export async function POST(req: Request): Promise<Response>{
 
   let queryResponse:any = await index.query({
     queryRequest: {
-      topK: 5,
+      topK: 2,
       vector: queryEmbedding,
       includeMetadata: true,
       includeValues: true,

@@ -128,7 +128,7 @@ const LineChart : React.FC<Props> = (props: Props)=> {
       console.log(newData)
       return newData;
     })
-    setDataIndex(index);
+    setDataIndex(index+1);
   }
   
   
@@ -142,14 +142,19 @@ const LineChart : React.FC<Props> = (props: Props)=> {
         <div className=''>View: </div> 
 
         <div className='overflow-x-auto w-full flex pb-3'>
+    
         <button 
-              onClick={()=>setDisplayData(allData)} 
+              onClick={()=>{
+                setDisplayData(allData)
+                setDataIndex(0);
+              }} 
               className={` hover:bg-sky-400/10 ${dataIndex===0?'bg-sky-400/20':''} text-sky-400 p-1 cursor-pointer rounded border-solid border border-sky-500 whitespace-nowrap ml-2`} >
               Combined
             </button>
           {allData.datasets.map((key:any, index) => (
             <button 
-              onClick={()=>handleClick(index+1)} // 1 based indexing in Array , 0 is for all
+              onClick={()=>{
+                handleClick(index)}} // 1 based indexing in Array , 0 is for all
               className={` hover:bg-sky-400/10 ${dataIndex===index+1?'bg-sky-400/20':''} text-sky-400 p-1 cursor-pointer rounded border-solid border border-sky-500 whitespace-nowrap ml-2`} key={index}>
               {key.label}
             </button>

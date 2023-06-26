@@ -27,6 +27,8 @@ const Chat: React.FC = () => {
     }
 
     try{
+        setSources([]);
+        setAiResponse('');
         const response = await fetch('api/pinecone', {
           method: 'POST',
           headers: {
@@ -41,7 +43,7 @@ const Chat: React.FC = () => {
         }
     
         const matches = (await response.json()).matches;
-        setSources([]);
+        
         const sources = matches.map((match: any) => {
             setSources((prev) => [...prev, match.metadata]);
             return match.metadata.text;
@@ -66,8 +68,7 @@ const Chat: React.FC = () => {
             }
         
             const reader = response.body?.getReader();
-    
-            setAiResponse('');
+
     
             // Read the streaming text
             while (true) {
@@ -126,13 +127,18 @@ const Chat: React.FC = () => {
         {displayGreeting?
         <Greeting setInputValue={setInputValue} handleSend={handleSend} />
         :<> 
-            {aiResponse?<>
+            {aiResponse?
             <div>
                 {aiResponse}
             </div>
-            {MemoizedSources}</>:<div className='flex justify-end'>
+            :<div className='flex justify-end'>
                 <ThinkingLoader/>
             </div>}   
+            {sources.length?<div>
+            {MemoizedSources}
+            </div>:<div>
+                Loading sources...
+                </div>}
         </>
         }
         </div>
