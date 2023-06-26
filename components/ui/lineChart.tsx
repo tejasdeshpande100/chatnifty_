@@ -24,6 +24,11 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
+  legend: {
+    display: true,
+    color:'white',
+  },
+  
   plugins: {
     legend: {
       position: 'top' as const,
@@ -32,7 +37,9 @@ export const options = {
     title: {
       display: true,
       text: 'Chart.js Line Chart',
+      color: 'white',
     },
+    
   },
 };
 
