@@ -27,7 +27,7 @@ const Chat: React.FC = () => {
     }
 
     try{
-        const response = await fetch('http://localhost:3000/api/pinecone', {
+        const response = await fetch('https://main.d38wt8lnhgd5k5.amplifyapp.com/api/pinecone', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const Chat: React.FC = () => {
         
         try {
         
-            const response = await fetch('http://localhost:3000/api/chat', {
+            const response = await fetch('https://main.d38wt8lnhgd5k5.amplifyapp.com/api/chat', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
