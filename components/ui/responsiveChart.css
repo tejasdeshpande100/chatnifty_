@@ -12,14 +12,14 @@
 
  @media (max-width: 768px) {
      #canvas-container {
-        height: 60vh;
-        width: 120vh;
+        height: 50vh;
+        width: 100vh;
       }
  }
 
  @media (max-width: 768px) {
     #canvas-containe-wrapperr {
-       height: 60vh;
+       height: 50vh;
      }
 }
 

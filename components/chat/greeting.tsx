@@ -25,63 +25,62 @@ const limitations =[
 
 interface Props {
     setInputValue: (input:string)=>void,
-    handleSend: ()=>void
+    getResponse: (question:string)=>void
 }
 
 const greeting: React.FC<Props> = (props) => {
-    const { setInputValue, handleSend } = props;
+    const { setInputValue, getResponse } = props;
 
     const handleClick = (index:number)=>{
         console.log(examples[index])
         setInputValue(examples[index])
-        handleSend()
+        getResponse(examples[index])
     }
   return (
    
-    <div className="flex w-full bg-transparent h-96">
-        
-        <div className='flex m-auto w-5/6 justify-evenly text-center'>
-            <div className='w-4/12 m-1'>
-                <div className='flex text-sky-400'>
-                    <HiOutlineLightBulb className='m-auto' size={30}/>
-                </div>
-                <div className='mt-2'>
-                    Examples
-                </div>
-                {examples.map((example, index)=>(
-                <div onClick={()=>handleClick(index)} key={index} className='mt-3 bg-[#0f172a] p-3 cursor-pointer rounded hover:bg-sky-900 bg-sky-600/10'>
-                   {`"${example}" -->`}
-                </div>
-                ))}
+    <div className="flex flex-wrap md:flex-nowrap w-full bg-transparent text-center h-full">
+
+        <div className='w-full m-1'>
+            <div className='flex text-sky-400'>
+                <HiOutlineLightBulb className='m-auto' size={30}/>
             </div>
-            <div className='w-4/12 m-1'>
-                <div className='flex text-sky-400'>
-                    <GiBrain className='m-auto' size={30}/>
-                </div>
-                <div className='mt-2'>
-                    Capabilities
-                </div>
-                {capabilities.map((capability, index)=>(
-                    <div key={index} className='mt-3 bg-[#0f172a] p-3 rounded bg-sky-600/10'>
-                        {capability}
-                    </div>
-                ))}
-                
+            <div className='mt-2'>
+                Examples
             </div>
-            <div className='w-4/12 m-1' >
-                <div className='flex text-sky-400'>
-                    <BsFillExclamationTriangleFill className='m-auto'  size={30}/>
-                </div>
-                <div className='mt-2'>
-                    Limitations
-                </div>
-                {limitations.map((limitation, index)=>(
-                    <div key={index} className='mt-3 bg-[#0f172a] p-3 rounded bg-sky-600/10'>
-                        {limitation}
-                    </div>
-                ))}
+            {examples.map((example, index)=>(
+            <div onClick={()=>handleClick(index)} key={index} className='mt-3 bg-[#0f172a] p-3 cursor-pointer rounded hover:bg-sky-900 bg-sky-600/10'>
+                {`"${example}" -->`}
             </div>
+            ))}
         </div>
+        <div className='w-full m-1'>
+            <div className='flex text-sky-400'>
+                <GiBrain className='m-auto' size={30}/>
+            </div>
+            <div className='mt-2'>
+                Capabilities
+            </div>
+            {capabilities.map((capability, index)=>(
+                <div key={index} className='mt-3 bg-[#0f172a] p-3 rounded bg-sky-600/10'>
+                    {capability}
+                </div>
+            ))}
+            
+        </div>
+        <div className='w-full m-1' >
+            <div className='flex text-sky-400'>
+                <BsFillExclamationTriangleFill className='m-auto'  size={30}/>
+            </div>
+            <div className='mt-2'>
+                Limitations
+            </div>
+            {limitations.map((limitation, index)=>(
+                <div key={index} className='mt-3 bg-[#0f172a] p-3 rounded bg-sky-600/10'>
+                    {limitation}
+                </div>
+            ))}
+        </div>
+        
     </div>
     
   )

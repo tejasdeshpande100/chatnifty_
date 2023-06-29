@@ -20,10 +20,97 @@ const Chat: React.FC = () => {
     setInputValue(event.target.value);
   };
 
-  const handleSend = async (e?: React.FormEvent) => {
+  const handleSubmit = async (e?: React.FormEvent, ) => {
     if (e) {
         e.preventDefault();
     }
+
+    getResponse(inputValue)
+    // if(displayGreeting){
+    //     setDisplayGreeting(false);
+    // }
+
+    // try{
+    //     setSources([]);
+    //     setAiResponse('');
+    //     const response = await fetch('api/pinecone', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({question: inputValue}),
+    //     });
+    
+    //     // Ensure the response is valid
+    //     if (!response.ok) {
+    //         console.log(response)
+    //         throw new Error(`Error here: ${response.status} - ${response.statusText}`);
+    //     }
+    
+    //     const matches = (await response.json()).matches;
+        
+    //     const sources = matches.map((match: any) => {
+    //         setSources((prev) => [...prev, match.metadata]);
+    //         return match.metadata.text;
+    //     });
+        
+    //     try {
+        
+    //         const response = await fetch('api/chat', {
+    //           method: 'POST',
+    //           headers: {
+    //             'Content-Type': 'application/json',
+    //           },
+    //           body: JSON.stringify({
+    //             question: inputValue,
+    //             sources: sources
+    //         }),
+    //         });
+        
+    //         // Ensure the response is valid
+    //         if (!response.ok) {
+    //             throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    //         }
+        
+    //         const reader = response.body?.getReader();
+
+    //         setStreaming(true)
+    
+    //         // Read the streaming text
+    //         while (true) {
+    //             if(reader){
+    //                 const { done, value } = await reader.read();
+    
+    //                 // Check if the streaming is complete
+    //                 if (done) {
+    //                     break;
+    //                 }
+    
+    //                 // Convert the received value to text
+    //                 const chunk = new TextDecoder().decode(value);
+    
+    //                 // Process the received text
+    //                 setAiResponse((prev) => prev + chunk.toString());
+    //             }else{
+    //                 console.log('reader is null')
+    //                 break;
+    //             }
+                
+    //         }
+
+    //         setStreaming(false)
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     }
+    // }catch(error){
+    //     console.error('Error in Fetching Data',error);
+    //     return;
+    // }
+    
+   
+  }
+
+  const getResponse = async (question:string) => {
     if(displayGreeting){
         setDisplayGreeting(false);
     }
@@ -36,7 +123,7 @@ const Chat: React.FC = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({question: inputValue}),
+          body: JSON.stringify({question: question}),
         });
     
         // Ensure the response is valid
@@ -60,7 +147,7 @@ const Chat: React.FC = () => {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                question: inputValue,
+                question: question,
                 sources: sources
             }),
             });
@@ -104,8 +191,6 @@ const Chat: React.FC = () => {
         console.error('Error in Fetching Data',error);
         return;
     }
-    
-   
   }
 
   // Memoize the Sources component to prevent unnecessary re-renders
@@ -114,12 +199,15 @@ const Chat: React.FC = () => {
 
   return (
     <div className="container mx-auto max-w-6xl">
-        <form onSubmit={handleSend} className='flex'>
-            <input type="text" 
+        <form onSubmit={handleSubmit} className='flex'>
+            
+            <input 
+                type="text" 
+                required
                 value={inputValue} 
                 onChange={handleInputChange} 
                 className="w-full m-auto bg-gray-800 text-white px-4 py-2 rounded-md focus:outline-none margin" 
-                placeholder="Ask a question, being specific will provide better results" 
+                placeholder="Ask a question..." 
             />
             <button 
                 disabled={streaming}
@@ -130,9 +218,10 @@ const Chat: React.FC = () => {
                  size={24} />
             </button>
         </form>
-        <div className="bg-[#0f172a] p-4 rounded-lg border border-gray-500 shadow-md mt-4 text-slate-300">
+        {/* <div className='text-slate-500 text-xs mt-1'>Being specific will provide better results</div> */}
+        <div className="bg-[#0f172a] p-4 rounded-lg border border-gray-500 shadow-md mt-4 text-slate-300 h-full">
         {displayGreeting?
-        <Greeting setInputValue={setInputValue} handleSend={handleSend} />
+        <Greeting setInputValue={setInputValue} getResponse={getResponse} />
         :<> 
             {aiResponse?
             <div>
