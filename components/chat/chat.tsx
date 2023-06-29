@@ -41,7 +41,8 @@ const Chat: React.FC = () => {
     
         // Ensure the response is valid
         if (!response.ok) {
-            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+            console.log(response)
+            throw new Error(`Error here: ${response.status} - ${response.statusText}`);
         }
     
         const matches = (await response.json()).matches;
