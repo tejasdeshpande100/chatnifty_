@@ -1,6 +1,7 @@
 #canvas-container {
     width: 100%;
     position: relative;
+    height: 50vh;
  }
 
  #canvas-container-wrapper {
@@ -8,6 +9,7 @@
     overflow-x:scroll;
     width:100%;
     position: relative;
+    height: 50vh;
  }
 
  @media (max-width: 768px) {

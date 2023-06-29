@@ -37,7 +37,9 @@ export default function SwipeableTemporaryDrawer() {
   );
 
   return (
-    <div className='lg:hidden'>
+    <div 
+        // className='lg:hidden'
+    >
       {(['left'] as const).map((anchor) => (
         <React.Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)}>
