@@ -31,7 +31,7 @@ export async function POST(req: Request): Promise<Response>{
 
   try {
     const response = await fetch(url, options);
-    
+     
     const data = await response.json();
    
     return new Response(JSON.stringify({matches:data.matches}), { status: 200 });
