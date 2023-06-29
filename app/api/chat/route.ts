@@ -63,7 +63,6 @@ export async function POST(req: Request): Promise<Response>{
         return new StreamingTextResponse(stream);
       }  catch (error) {
         // Handle the error
-        console.log('erorrrr',error)
         return new Response('error', { status: 500 })
       }
       
@@ -71,7 +70,6 @@ export async function POST(req: Request): Promise<Response>{
     
     } catch (error) {
       // Handle the error
-      console.log('erorrrr',error)
       return new Response('error', { status: 500 })
     }
     
