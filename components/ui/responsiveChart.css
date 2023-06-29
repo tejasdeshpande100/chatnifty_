@@ -1,0 +1,25 @@
+#canvas-container {
+    width: 100%;
+    position: relative;
+ }
+
+ #canvas-container-wrapper {
+    width: 100%;
+    overflow-x:scroll;
+    width:100%;
+    position: relative;
+ }
+
+ @media (max-width: 768px) {
+     #canvas-container {
+        height: 60vh;
+        width: 120vh;
+      }
+ }
+
+ @media (max-width: 768px) {
+    #canvas-containe-wrapperr {
+       height: 60vh;
+     }
+}
+

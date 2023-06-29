@@ -11,6 +11,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import './responsiveChart.css'
 
 ChartJS.register(
   CategoryScale,
@@ -23,7 +24,6 @@ ChartJS.register(
 );
 
 export const options = {
-  responsive: true,
   legend: {
     display: true,
     color:'white',
@@ -43,6 +43,9 @@ export const options = {
   plugins: {
     legend: {
       position: 'top' as const,
+      labels: {
+        color: 'white'
+      }
     },
     maintainAspectRatio: false,
     title: {
@@ -172,8 +175,11 @@ const LineChart : React.FC<Props> = (props: Props)=> {
           ))}
         </div>
         </div>
-
-        <Line options={options} data={displayData} />
+        <div id='canvas-container-wrapper'> 
+        <div id='canvas-container'> 
+        <Line  options={options} data={displayData} />
+        </div>
+        </div>
 
     </>
     
