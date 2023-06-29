@@ -1,4 +1,3 @@
-import { PineconeClient } from '@pinecone-database/pinecone'
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
 
 interface requestBody {
@@ -11,24 +10,34 @@ export async function POST(req: Request): Promise<Response>{
   
   const queryEmbedding = await new OpenAIEmbeddings().embedQuery(question)
 
-  const client = new PineconeClient()
-  await client.init({
-    apiKey: process.env.PINECONE_API_KEY || '',
-    environment: process.env.PINECONE_ENVIRONMENT || ''
-  })
+  const url = process.env.PINECONE_URL + '/query' || '';
+  const apiKey = process.env.PINECONE_API_KEY || '';
 
-  const index = client.Index(process.env.PINECONE_INDEX || '');
-
-
-  let queryResponse:any = await index.query({
-    queryRequest: {
+  const options = {
+    method: 'POST',
+    headers: {
+      'Api-Key': apiKey,
+      'accept': 'application/json',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
       topK: 2,
       vector: queryEmbedding,
       includeMetadata: true,
       includeValues: true,
       namespace: 'test'
-    },
-  });
-  
-  return new Response(JSON.stringify({matches:queryResponse.matches}), { status: 200 });
+    }),
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    return new Response(JSON.stringify({matches:data.matches}), { status: 200 });
+  } catch (error) {
+    console.error('Error:', error);
+    return new Response(JSON.stringify({error}), { status: 500 });
+   
+  }
+
 }

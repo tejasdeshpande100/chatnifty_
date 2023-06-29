@@ -5,6 +5,7 @@ import { ImCross } from 'react-icons/im';
 import Sources from './sources';
 import Greeting from './greeting';
 import ThinkingLoader from '../ui/thinkingLoader';
+import SourcesLoader from '../ui/sourcesLoader';
 
 
 const Chat: React.FC = () => {
@@ -13,6 +14,7 @@ const Chat: React.FC = () => {
   const [aiResponse, setAiResponse] = useState<string>('');
   const [sources, setSources] = useState<any[]>([])
   const [displayGreeting, setDisplayGreeting] = useState<boolean>(true);
+  const [streaming, setStreaming] = useState<boolean>(false);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -69,6 +71,7 @@ const Chat: React.FC = () => {
         
             const reader = response.body?.getReader();
 
+            setStreaming(true)
     
             // Read the streaming text
             while (true) {
@@ -91,6 +94,8 @@ const Chat: React.FC = () => {
                 }
                 
             }
+
+            setStreaming(false)
         } catch (error) {
             console.error('Error:', error);
         }
@@ -116,6 +121,7 @@ const Chat: React.FC = () => {
                 placeholder="Ask a question, being specific will provide better results" 
             />
             <button 
+                disabled={streaming}
                 className="hover:bg-sky-400/50 bg-sky-400/20 text-sky-400 font-bold py-2 px-4 rounded"
             >
                 <IoSend 
@@ -131,13 +137,13 @@ const Chat: React.FC = () => {
             <div>
                 {aiResponse}
             </div>
-            :<div className='flex justify-end'>
+            :sources.length?<div className='flex justify-end'>
                 <ThinkingLoader/>
-            </div>}   
+            </div>:null}   
             {sources.length?<div>
             {MemoizedSources}
-            </div>:<div>
-                Loading sources...
+            </div>:<div className='flex justify-end'>
+            <SourcesLoader/>
                 </div>}
         </>
         }

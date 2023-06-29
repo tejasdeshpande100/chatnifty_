@@ -91,8 +91,13 @@ const TableComponent : React.FC<Props> = (props: Props)=> {
     padding: '0.6rem',
   }
 
+  const title =  ( `${props.metadata?.text.match(/Ticker: (.*)/)?.[1]}: ` + (props.metadata?.text.match(/DATA:(.*)/)?.[1])) || ''
+
   return (
     <div className='mt-2'>
+      <div className='text-center mb-2'>
+        {title}
+      </div>
       <TableContainer sx={{
                     backgroundColor: '#0f172a',
                     color: 'white',

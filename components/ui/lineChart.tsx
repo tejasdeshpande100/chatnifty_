@@ -28,7 +28,18 @@ export const options = {
     display: true,
     color:'white',
   },
-  
+  scales: {
+    x: { 
+        ticks: {
+          color: "white", // this here
+        },
+    },
+    y: {
+      ticks: {
+        color: "white", // this here
+      },
+    }
+  },
   plugins: {
     legend: {
       position: 'top' as const,
@@ -133,7 +144,7 @@ const LineChart : React.FC<Props> = (props: Props)=> {
   
   
 
-  options.plugins.title.text =  props.metadata.title || ( `${props.metadata?.text.match(/Ticker: (.*)/)?.[1]} ` + (props.metadata?.text.match(/DATA:(.*)/)?.[1] || props.metadata?.text.match(/DATA: (.*)/)?.[1]))
+  options.plugins.title.text =  ( `${props.metadata?.text.match(/Ticker: (.*)/)?.[1]}: ` + (props.metadata?.text.match(/DATA:(.*)/)?.[1])) || ''
 
   return (
     <>
